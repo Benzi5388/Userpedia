@@ -1,0 +1,11 @@
+.nav-items a.nav-link {
+  margin-right: 30px; /* Adjust the value as needed */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 100;
+}
+
+/* header.css */
+.bold-user {
+font-weight: bold;
+color: black;
+}
