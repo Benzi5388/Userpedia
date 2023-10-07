@@ -18,6 +18,7 @@ export default function Cards({flag, setFlag}) {
     const fetchDataFromDexie = async () => {
       try {
         const data = await db.data.toArray();
+       console.log(data, "33333333333333")
         setUserData(data);
       } catch (error) {
         console.error('Error fetching data from Dexie:', error);

@@ -34,6 +34,22 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const fetchDocuments = async () => {
+      const count = await db.data.count();
+      if (count === 0) {
+        try {
+          await fetchData();
+        } catch (err) {
+          console.error('Error fetching data:', err);
+        }
+      }
+    }
+    fetchDocuments();
+  }, []);
+
+
+
   const handleRefreshClick = async () => {
     try {
       await fetchData();
@@ -64,7 +80,7 @@ function App() {
           <CircularProgress style={{ color: 'black' }} />
         </Box>
       )}
-      <Cards flag={flag} setFlag={setFlag}/>
+      <Cards flag={flag} setFlag={setFlag} />
     </div>
   );
 }
