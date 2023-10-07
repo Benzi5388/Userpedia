@@ -9,9 +9,9 @@ function App() {
   const [userCount, setUserCount] = useState(0);
   const [flag, setFlag] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   const fetchData = async () => {
-    setIsLoading(false)
     await db.data.clear();
     try {
       const response = await fetch('https://randomuser.me/api/?results=50');
@@ -20,7 +20,6 @@ function App() {
       }
       const data = await response.json();
       const numberOfUsers = data.results.length;
-      setUserCount(numberOfUsers);
       if (numberOfUsers > 0) {
         for (let i = 0; i < numberOfUsers; i++) {
           const user = data.results[i];
@@ -31,46 +30,41 @@ function App() {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+    }finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     const fetchDocuments = async () => {
       const count = await db.data.count();
+      setUserCount(count);
+      if (isInitialRender) {
+        setIsInitialRender(false);
+        return;
+      }
       if (count === 0) {
         try {
           await fetchData();
+          setFlag(!flag);
         } catch (err) {
           console.error('Error fetching data:', err);
         }
       }
     }
+    setIsLoading(false)
     fetchDocuments();
-  }, []);
-
-
+  }, [flag, isInitialRender]);
 
   const handleRefreshClick = async () => {
     try {
       await fetchData();
       setFlag(!flag);
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-
-  useEffect(() => {
-    const fetchDocumentCount = async () => {
-      try {
-        const count = await db.data.count();
-        setUserCount(count);
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching data from Dexie:', error);
-      }
-    };
-    fetchDocumentCount();
-  }, [flag]);
 
   return (
     <div className="App">

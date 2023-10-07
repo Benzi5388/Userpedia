@@ -15,6 +15,7 @@ export default function Cards({flag, setFlag}) {
   const [userCount, setUserCount] = useState(0);
   
   useEffect(() => {
+
     const fetchDataFromDexie = async () => {
       try {
         const data = await db.data.toArray();
