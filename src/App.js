@@ -12,6 +12,7 @@ function App() {
   const [isInitialRender, setIsInitialRender] = useState(true);
 
   const fetchData = async () => {
+    setIsLoading(true);
     await db.data.clear();
     try {
       const response = await fetch('https://randomuser.me/api/?results=50');
@@ -28,10 +29,9 @@ function App() {
           await db.data.add({ name: fullName, picture: pictureUrl, userCount: numberOfUsers });
         }
       }
+      setIsLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
-    }finally {
-      setIsLoading(false);
     }
   };
 
@@ -60,7 +60,6 @@ function App() {
     try {
       await fetchData();
       setFlag(!flag);
-      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching data:', error);
     }

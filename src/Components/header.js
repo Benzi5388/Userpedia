@@ -13,9 +13,9 @@ function Header({ userCount, handleRefreshClick }) {
           <Container>
             <Navbar.Brand>Userpedia</Navbar.Brand>
             <Nav className="me-auto">
-              <Nav.Link className="mx-auto" style={{ fontWeight: 'bold' }}>
+              <span className="mx-auto" style={{ fontWeight: 'bold', color: "white" }}>
                 No. of users: {userCount}
-              </Nav.Link>
+              </span>
             </Nav>
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>

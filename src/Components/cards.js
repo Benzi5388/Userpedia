@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import db, { deleteCard, logUserData } from '../db';
+import db, { deleteCard } from '../db';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,17 +9,13 @@ import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 import '../App.css';
 
-
 export default function Cards({flag, setFlag}) {
   const [userData, setUserData] = useState([]);
-  const [userCount, setUserCount] = useState(0);
-  
-  useEffect(() => {
 
+  useEffect(() => {
     const fetchDataFromDexie = async () => {
       try {
         const data = await db.data.toArray();
-       console.log(data, "33333333333333")
         setUserData(data);
       } catch (error) {
         console.error('Error fetching data from Dexie:', error);
@@ -28,20 +24,9 @@ export default function Cards({flag, setFlag}) {
     fetchDataFromDexie();
   }, [flag]);
 
-  const fetchDocumentCount = async () => {
-    try {
-      const count = await db.data.count();
-      setUserCount(count)
-    } catch (error) {
-      console.error('Error fetching document count:', error);
-    }
-  };
-
   const handleDeleteCard = async (cardId) => {
     try {
       await deleteCard(cardId);
-      await logUserData();
-      await fetchDocumentCount();
       setFlag(!flag)
       setUserData((prevUserData) => prevUserData.filter((user) => user.id !== cardId));
     } catch (error) {
@@ -53,7 +38,7 @@ export default function Cards({flag, setFlag}) {
     <div className="cards-container">
       <div className="cards-wrapper">
         {userData.map((user, index) => (
-          <Card key={index} sx={{ maxWidth: 345 }} className="card">
+          <Card key={index} sx={{ maxWidth: 360 }} className="card">
             <CardActionArea>
               <CardMedia
                 className="card-media"
